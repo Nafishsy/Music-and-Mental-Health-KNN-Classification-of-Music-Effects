@@ -12,7 +12,6 @@ data<-na_if(data,'')
 data<-na.omit(data)
 name<-names(data)
 
-
 data$Music.effects <- factor(data$Music.effects,
                      levels = c("Improve","Worsen","No effect"),
                      labels = c(1,2,3),
@@ -21,6 +20,7 @@ data$Music.effects <- factor(data$Music.effects,
 data.subset <- data[c('Age','Hours.per.day','BPM','Anxiety','Depression','Insomnia','OCD','Music.effects')]
 
 head(data.subset)
+
 normalize <- function(x) {
   return ((x - min(x)) / (max(x) - min(x))) 
 }
@@ -32,6 +32,7 @@ data.normalized <- as.data.frame(lapply(data.subset[,1:7], normalize))
 set.seed(200)
 
 # KNN 1st method
+
   dat.d <- sample(1:nrow(data.normalized),size=nrow(data.normalized)*0.7,replace = FALSE)
   
   train.data <- data.subset[dat.d,]
@@ -62,22 +63,44 @@ set.seed(200)
   for (i in 1:num-1) {
     j=i*10
     k=i*10-10
+    # Traing and test ulta hobe
+    test.data <- data.subset[k:j,]
+    train.data <- data.subset[-(k:j),]
     
-    train.data <- data.subset[k:j,]
-    test.data <- data.subset[-(k:j),]
-    
-    train.data_labels <- data.subset[k:j,8]
-    test.data_labels <-data.subset[-(k:j),8]
+    test.data_labels <- data.subset[k:j,8]
+    train.data_labels <-data.subset[-(k:j),8]
     
     k.fold.10 <- knn(train=train.data, test=test.data, cl=train.data_labels, k=10)
     ACC.k.fold <- 100 * sum(test.data_labels == k.fold.10)/NROW(test.data_labels)
     
-    ConfusionMAT.k.fold <- confusionMatrix(table(k.fold.10 ,test.data_labels))
-    
-    k10.fold <- factor(k.fold.10,levels = c(1,2,3),labels = c("Improve","Worsen","No effect"))
-    k10.fold
+    # ConfusionMAT.k.fold <- confusionMatrix(table(k.fold.10 ,test.data_labels))
+    # 
+    # k10.fold <- factor(k.fold.10,levels = c(1,2,3),labels = c("Improve","Worsen","No effect"))
+    # k10.fold
     K10FOLD.ACC= K10FOLD.ACC + ACC.k.fold
   }
   print(K10FOLD.ACC/num)
+  
+# N Fold cross validation
+  
+  num =nrow(data.subset)
+  
+  N.FOLD.ACC= 0
+  j=0
+  for (i in 1:num-1) {
+    j=j+1
+    # Traing and test ulta hobe
+    test.data <- data.subset[j,]
+    train.data <- data.subset[-j,]
+    
+    test.data_labels <- data.subset[j,8]
+    train.data_labels <-data.subset[-j,8]
+    
+    n.fold <- knn(train=train.data, test=test.data, cl=train.data_labels, k=1)
+    ACC.n.fold <- 100 * sum(test.data_labels == n.fold)/NROW(test.data_labels)
+
+    N.FOLD.ACC= N.FOLD.ACC + ACC.n.fold
+  }
+  print(N.FOLD.ACC/num)
   
   
