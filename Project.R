@@ -8,132 +8,44 @@ data<-na.omit(data)
 
 name<-names(data)
 
-for (i in name)
-{
-  
-  if(typeof(data[,i])=="character")
-  {
-    print(i)
-    data[,i]  <- NULL
-  }
+
+data$Music.effects <- factor(data$Music.effects,
+                     levels = c("Improve","Worsen","No effect"),
+                     labels = c(1,2,3),
+)
+
+data.subset <- data[c('Age','Hours.per.day','BPM','Anxiety','Depression','Insomnia','OCD','Music.effects')]
+
+head(data.subset)
+normalize <- function(x) {
+  return ((x - min(x)) / (max(x) - min(x))) 
 }
 
-data<-na.omit(data)
+data.normalized <- as.data.frame(lapply(data.subset[,1:7], normalize))
 
-hist(data$BPM)
+set.seed(123)
+dat.d <- sample(1:nrow(data.normalized),size=nrow(data.normalized)*0.7,replace = FALSE)
 
-for (i in 1:nrow(data))
-{
-  
-  if(data[i,3] < 60 || data[i,3] >115)
-  {
-    print(data[i,3])
-    data[i,3]<-NA
-    
-  }else{
-    
-  }
+train.data <- data.subset[dat.d,]
+test.data <- data.subset[-dat.d,]
 
-  
-}
+train.data_labels <- data.subset[dat.d,8]
+test.data_labels <-data.subset[-dat.d,8]
 
-data<-na.omit(data)
+install.packages('class')
+library(class)
+
+optimal_K =NROW(train.data_labels)
+sqrt(optimal_K)
 
 
-hist(data$Age)
+knn.20 <- knn(train=train.data, test=test.data, cl=train.data_labels, k=20)
+
+ACC.20 <- 100 * sum(test.data_labels == knn.20)/NROW(test.data_labels)
 
 
-for (i in 1:nrow(data))
-{
-  
-  if(data[i,1] > 50)
-  {
-    print(data[i,1])
-    data[i,1]<-NA
-  }else{
-    
-  }
-  
-  
-}
-
-data<-na.omit(data)
-
-
-hist(data$Hours.per.day)
-
-
-for (i in 1:nrow(data))
-{
-  
-  if(data[i,2] > 14)
-  {
-    print(data[i,1])
-    data[i,2]<-NA
-  }else{
-    
-  }
-  
-}
-
-data<-na.omit(data)
-
-
-hist(data$OCD)
-for (i in 1:nrow(data))
-{
-  
-  if(data[i,7] > 5.5)
-  {
-    print(data[i,7])
-    data[i,7]<-NA
-  }else{
-    
-  }
-  
-}
-data<-na.omit(data)
-
-
-hist(data$Insomnia)
-# for (i in 1:nrow(data))
-# {
-#   
-#   if(data[i,7] > 5.5)
-#   {
-#     print(data[i,7])
-#     data[i,7]<-NA
-#   }else{
-#     
-#   }
-#   
-# }
-data<-na.omit(data)
-
-
-
-
-name=names(data)
-for (i in name)
-{
-  cat(range(data[,i]),'For ',i,'\n')
-  
-}
-
-data2<-scale(data)
-
-library('factoextra')
-fviz_nbclust(data2,kmeans,method= 'wss')
-
-km<- kmeans(data2,centers = 2,nstart = 25)
-km
-
-df_member <-cbind(data2,cluster = km$cluster)
-fviz_cluster(km,data = data2)
-
-arrg<-aggregate(data, by=list(cluster=km$cluster),mean)
-arrg
-
-
+install.packages('caret')
+library(caret)
+confusionMatrix(table(knn.20 ,test.data_labels))
 
 
