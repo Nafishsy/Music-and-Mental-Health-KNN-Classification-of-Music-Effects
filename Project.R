@@ -6,10 +6,10 @@ library(caret)
 library(dplyr)
 
 data <- read.csv("mxmh_survey_results.csv",header = TRUE)
-str(data)
 
 data<-na_if(data,'')
 data<-na.omit(data)
+
 name<-names(data)
 
 data$Music.effects <- factor(data$Music.effects,
@@ -19,6 +19,7 @@ data$Music.effects <- factor(data$Music.effects,
 
 data.subset <- data[c('Age','Hours.per.day','BPM','Anxiety','Depression','Insomnia','OCD','Music.effects')]
 
+str(data.subset)
 head(data.subset)
 
 normalize <- function(x) {
@@ -30,7 +31,6 @@ data.normalized <- as.data.frame(lapply(data.subset[,1:7], normalize))
 
 
 set.seed(200)
-
 
   dat.d <- sample(1:nrow(data.normalized),size=nrow(data.normalized)*0.7,replace = FALSE)
   
@@ -51,3 +51,7 @@ set.seed(200)
   knn.20 <- factor(knn.20,levels = c(1,2,3),labels = c("Improve","Worsen","No effect"))
   knn.20
 
+  ACC.20
+  ConfusionMAT
+
+    
