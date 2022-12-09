@@ -29,6 +29,9 @@ data.normalized <- as.data.frame(lapply(data.subset[,1:7], normalize))
 
 
 
+
+
+
 set.seed(200)
 
 # KNN 1st method
