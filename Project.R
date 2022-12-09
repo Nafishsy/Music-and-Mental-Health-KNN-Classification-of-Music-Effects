@@ -52,8 +52,6 @@ set.seed(200)
   knn.20 <- factor(knn.20,levels = c(1,2,3),labels = c("Improve","Worsen","No effect"))
   knn.20
 
-# KNN K-fold Method
-  
   num =nrow(data.subset)
   
   num =round(num/10)
@@ -63,7 +61,7 @@ set.seed(200)
   for (i in 1:num-1) {
     j=i*10
     k=i*10-10
-    # Traing and test ulta hobe
+    
     test.data <- data.subset[k:j,]
     train.data <- data.subset[-(k:j),]
     
@@ -72,16 +70,11 @@ set.seed(200)
     
     k.fold.10 <- knn(train=train.data, test=test.data, cl=train.data_labels, k=10)
     ACC.k.fold <- 100 * sum(test.data_labels == k.fold.10)/NROW(test.data_labels)
-    
-    # ConfusionMAT.k.fold <- confusionMatrix(table(k.fold.10 ,test.data_labels))
-    # 
-    # k10.fold <- factor(k.fold.10,levels = c(1,2,3),labels = c("Improve","Worsen","No effect"))
-    # k10.fold
+  
     K10FOLD.ACC= K10FOLD.ACC + ACC.k.fold
   }
   print(K10FOLD.ACC/num)
   
-# N Fold cross validation
   
   num =nrow(data.subset)
   
@@ -89,7 +82,7 @@ set.seed(200)
   j=0
   for (i in 1:num-1) {
     j=j+1
-    # Traing and test ulta hobe
+
     test.data <- data.subset[j,]
     train.data <- data.subset[-j,]
     
@@ -103,4 +96,4 @@ set.seed(200)
   }
   print(N.FOLD.ACC/num)
   
-  
+
