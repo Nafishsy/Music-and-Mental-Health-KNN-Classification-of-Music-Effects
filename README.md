@@ -1,21 +1,19 @@
-# DataScience_final_project
-**Project Title**
+**Project Title: Music and Mental Health: KNN Classification of Music Effects**
 
-Replace with a descriptive title that reflects the project's purpose (e.g., "Music and Mental Health: KNN Classification of Music Effects")
-Description
+***Description***
 
-Briefly explain the project's goal (e.g., "This project investigates the relationship between music and mental health using the 'mxmh_survey_results.csv' dataset. It employs K-Nearest Neighbors (KNN) to classify the perceived effects of music (improve, worsen, no effect) on individuals experiencing anxiety, depression, insomnia, and OCD.")
+This project investigates the relationship between music and mental health using the 'mxmh_survey_results.csv' dataset. It employs K-Nearest Neighbors (KNN) to classify the perceived effects of music (improve, worsen, no effect) on individuals experiencing anxiety, depression, insomnia, and OCD.")
 
-**Installation**
+***Installation***
 
-List the required R packages and provide installation instructions:
+List the required R packages and provide installation instructions:\
 **Required Packages:**
 
 * dplyr
 * caret
 * class
 
-**Installation:**
+**Setup:**
 
 If you don't have these packages installed, you can install them using the following command in your R console:
 
@@ -23,7 +21,8 @@ If you don't have these packages installed, you can install them using the follo
 install.packages(c("dplyr", "caret", "class"))
 ```
 
-**Data Preparation:**
+
+***Data Preparation:***
 
 The code assumes a CSV file named "mxmh_survey_results.csv" is present in your working directory.
 If the file is located elsewhere, modify the read.csv function call accordingly.
@@ -35,11 +34,11 @@ This will perform the data cleaning, feature engineering, KNN classification, an
 Output
 
 The script outputs the following:
-Summary of the preprocessed data using str(data.subset)
-First few rows of the preprocessed data using head(data.subset)
-Classification accuracy using KNN (ACC.20)
-Confusion matrix (ConfusionMAT)
-Assumptions and Limitations
+* Summary of the preprocessed data using str(data.subset)
+* First few rows of the preprocessed data using head(data.subset)
+* Classification accuracy using KNN (ACC.20)
+* Confusion matrix (ConfusionMAT)
+* Assumptions and Limitations
 
 The code assumes the "mxmh_survey_results.csv" dataset has the expected format.
 Data cleaning and feature engineering might need adjustments depending on the specific dataset.
